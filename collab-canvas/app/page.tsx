@@ -1,11 +1,17 @@
 // Home
 import {Button} from '@/components/ui/button'
+import Head from 'next/head';
+import MarketingPage from './[marketing]/page';
 
 export default function Home() {
   return (
+    <>
+    <Head>
+      <link rel="icon" href="/collab-logo.svg" />
+    </Head>
     <div className='px-4'>
-      <p className='text-red-500 font-bold'>Hello World</p>
-      <Button className='h-5 rounded-md px-3' variant="destructive">Click Me</Button>
+      <MarketingPage/>
     </div>
+    </>
   )
 }
