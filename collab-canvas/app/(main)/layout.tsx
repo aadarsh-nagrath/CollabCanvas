@@ -15,7 +15,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
         );
     }
-
+    // To restrict other url path and redirect to /
     if(!isAuthenticated){
         return redirect("/");
     }
