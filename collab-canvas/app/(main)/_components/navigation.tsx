@@ -1,18 +1,21 @@
 "use client";
 
-import { ChevronLeft, MenuIcon } from "lucide-react";
+import { ChevronLeft, MenuIcon, PlusCircle, Search, SettingsIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { ElementRef, useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import { UserItems } from "./user-items";
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import {api} from "@/convex/_generated/api";
+import { Items } from "./items";
+import { toast } from "sonner";
 
 export const Navigation = () => {
     const pathname = usePathname();
     const isMobile = useMediaQuery("(max-width: 768px)");
     const documents = useQuery(api.document.get);
+    const create = useMutation(api.document.create);
 
     const isResizingRef = useRef(false);
     const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -84,6 +87,15 @@ export const Navigation = () => {
         }
     }
 
+    const handleCreate = () => {
+        const promise = create({title: "Untitled"});
+        toast.promise(promise, {
+            loading: "Creating a new document...",
+            success: "New Document created!",
+            error: "Error creating document",
+        });
+    }
+
     return(
         <>
             <aside 
@@ -105,6 +117,22 @@ export const Navigation = () => {
                 </div>
                 <div>
                     <UserItems />
+                    <Items 
+                        label="Search"
+                        icon={Search}
+                        isSearch
+                        onClick={()=>{}}
+                    />
+                    <Items 
+                        label="Settings"
+                        icon={SettingsIcon}
+                        onClick={()=>{}}
+                    />
+                    <Items 
+                        onClick={handleCreate}
+                        label="New Documents"
+                        icon={PlusCircle}     
+                    />
                 </div>
                 <div className="mt-4">
                     {documents?.map((document)=> (<p key={document._id} >{document.title}</p>))}
